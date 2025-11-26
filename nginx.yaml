@@ -2,12 +2,12 @@
   hosts: "local"
   connection: "local"
   become: "yes"
-  vars_files:
-    - nginx-vars.yaml
-  vars_prompt:
-  - name: "NAME"
-    prompt: "What is your name"
-    private: true
+  # vars_files:
+  #   - nginx-vars.yaml
+  # vars_prompt:
+  # - name: "NAME"
+  #   prompt: "What is your name"
+  #   private: true
   # vars:
   #   NAME: "Vinay Kumar"
   #   ROLE: "DevOps"
@@ -26,12 +26,12 @@
   hosts: "local"
   connection: "local"
   become: "yes"
-  vars_files:
-    - nginx-vars.yaml
-  vars_prompt:
-  - name: "NAME"
-    prompt: "What is your name"
-    private: true
+  # vars_files:
+  #   - nginx-vars.yaml
+  # vars_prompt:
+  # - name: "NAME"
+  #   prompt: "What is your name"
+  #   private: true
   tasks: 
     - name: "starting the nginx server"
       ansible.builtin.service: 
