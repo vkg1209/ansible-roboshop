@@ -22,8 +22,7 @@
   hosts: "local"
   connection: "local"
   become: "yes"
-  vars_files:
-    - nginx-vars.yaml
+  
   tasks: 
     - name: "starting the nginx server"
       ansible.builtin.service: 
@@ -31,6 +30,8 @@
         state: "started"
     
     - name: "Echo message"
+      vars_files:
+        - nginx-vars.yaml
       vars:
         # NAME: "Vinay Kumar"
       ansible.builtin.debug:
