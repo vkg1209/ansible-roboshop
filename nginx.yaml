@@ -1,6 +1,6 @@
 - name: "Practicing if condition"
   hosts: "local"
-  connnection: "local"
+  connection: "local"
   become: "yes"
   tasks: 
   - name: "Checking the condition"
