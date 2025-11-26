@@ -10,4 +10,4 @@
   - name: "Checking the condition"
     ansible.builtin.debug:
       msg: "{{a}} is less than 100"
-    when: a < 100
+    when: a | int < 100
