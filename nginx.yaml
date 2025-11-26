@@ -1,0 +1,33 @@
+- name: "Installing nginx server"
+  hosts: "local"
+  connection: "local"
+  become: "yes"
+  vars:
+    NAME: "Vinay Kumar"
+    ROLE: "DevOps"
+    SALARY: "20 Lakhs"
+  tasks:
+    - name: "install nginx"
+      ansible.builtin.package:
+        name: "nginx"
+        state: "present"
+    
+    - name: "Echo message"
+      ansible.builtin.debug:
+        msg: "{{NAME}} in the {{ROLE}} Department with {{SALARY}} written this program"
+
+- name: "Starting the nginx server"
+  hosts: "local"
+  connection: "local"
+  become: "yes"
+  tasks: 
+    - name: "starting the nginx server"
+      ansible.builtin.service: 
+        name: "nginx"
+        state: "started"
+    
+    - name: "Echo message"
+      vars:
+        NAME: "Vinay Kumar"
+      ansible.builtin.debug:
+        msg: "{{NAME}} successfully started the nginx server"
