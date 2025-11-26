@@ -2,14 +2,12 @@
   hosts: "local"
   connection: "local"
   become: "yes"
+  vars_prompt:
+  - name: "a"
+    prompt: "Enter the number"
+    private: false
   tasks: 
   - name: "Checking the condition"
-    # vars:
-    #   a: 10
-    vars_prompt:
-    - name: "a"
-      prompt: "Enter the number"
-      private: false
     ansible.builtin.debug:
       msg: "{{a}} is less than 100"
       when: a < 100
