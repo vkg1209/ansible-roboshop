@@ -1,11 +1,13 @@
-- name: "installing zip when redhat"
+- name: "loop practice"
   hosts: "local"
   connection: "local"
   become: "yes"
   tasks: 
-  - name: "printing the ansible_facts"
-    dnf:
-      name: "zip"
-      state: "present"
-    when: ansible_os_family == "edHat"
+  - name: "printing the names"
+    ansible.builtin.debug:
+      msg: "Hello {{item}}"
+    loop: 
+    - "vinay"
+    - "rahul"
+    - "siva"
       
