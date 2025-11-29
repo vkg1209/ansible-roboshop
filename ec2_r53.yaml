@@ -1,0 +1,21 @@
+- name: EC2 Instances & R53 Records creation
+  hosts: local
+  connection: local
+  become: yes
+  vars:
+    instance_type: t3.micro
+    security_group: sg-03c4d065bf7f7f94d
+    image_id: ami-09c813fb71547fc4f
+  tasks: 
+  - name: Creating EC2 Instances
+    amazon.aws.ec2_instance:
+      name: "{{item}}"
+      instance_type: "{{instance_type}}"
+      security_group: "{{security_group}}"
+      image_id: "{{image_id}}"
+    register: output
+    loop: "{{INSTANCES}}"
+  
+  - name: print output
+    ansible.builtin.debug:
+      msg: "{{output}}"
