@@ -1,6 +1,6 @@
 - name: setting up rabbitmq server
   hosts: rabbitmq
-  become: hosts
+  become: yes
   tasks:
 
   # copying the rabbitmq repo 
