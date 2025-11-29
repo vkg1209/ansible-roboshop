@@ -19,7 +19,8 @@
 
   - name: print ec2 output
     ansible.builtin.debug:
-      msg: "{{output}}"
+      msg: "{{item.instances[0].public_ip_address}}"
+    loop: "{{output.results}}"
 
   # - name: Creating or Updating R53 Records
   #   amazon.aws.route53:
