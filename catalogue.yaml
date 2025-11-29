@@ -54,7 +54,7 @@
   # unzipping the catalogue file
   - name: extracting the catalogue file into app directory
     ansible.builtin.unarchive:
-      source: /tmp/catalogue.zip
+      src: /tmp/catalogue.zip
       dest: /app
       remote_src: yes
 

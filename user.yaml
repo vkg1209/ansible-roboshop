@@ -54,7 +54,7 @@
   # unzipping the user file
   - name: extracting the user file into app directory
     ansible.builtin.unarchive:
-      source: /tmp/user.zip
+      src: /tmp/user.zip
       dest: /app
       remote_src: yes
 
