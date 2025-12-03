@@ -10,7 +10,7 @@
 
   # installing required python libraries
   - name: installing botocore and boto3 python libraries
-    ansible.builtin.pip3.9:
+    ansible.builtin.pip:
       executable: pip3.9
       name: "{{ item }}"
     loop:
