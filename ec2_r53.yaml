@@ -8,6 +8,16 @@
     domain_name: bloombear.fun
   tasks: 
 
+  # installing required python libraries
+  - name: installing botocore and boto3 python libraries
+    ansible.builtin.pip3.9:
+      executable: pip3.9
+      name: "{{ item }}"
+    loop:
+      - botocore
+      - boto3
+
+
   # task for creating N number of instances
   # creates N number of ec2 instances based on the list passed with the playbook
   - name: Creating EC2 Instances
