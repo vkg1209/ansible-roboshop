@@ -3,35 +3,29 @@
   become: yes
   tasks:
 
-  # disabling default redis version
   - name: disabling default redis
     ansible.builtin.command: dnf module disable redis -y
 
-  # enabling the redis 7 version
   - name: enabling redis 7
     ansible.builtin.command: dnf module enable redis:7 -y
 
-  # installing redis
   - name: installing redis package
     ansible.builtin.package:
       name: redis
       state: present
 
-  # allow remote connection other than localhost
   - name: allowing remote connections
     ansible.builtin.replace:
       regexp: '127.0.0.1'
       replace: '0.0.0.0'
       path: '/etc/redis/redis.conf'
   
-  # modifying protected mode from yes to no
   - name: changing protected mode to no
     ansible.builtin.lineinfile:
       path: '/etc/redis/redis.conf'
       regexp: 'protected-mode'
       line: 'protected-mode no'
 
-  # starting and enabling the server
   - name: starting and enabling the redis
     ansible.builtin.service:
       name: redis

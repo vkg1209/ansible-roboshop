@@ -3,15 +3,12 @@
   become: yes
   tasks: 
 
-  # disabling default nodejs version
   - name: disabling default nodejs
     ansible.builtin.command: dnf module disable nodejs -y
 
-  # enabling the nodejs 20 version
   - name: enabling nodejs 20
     ansible.builtin.command: dnf module enable nodejs:20 -y
 
-  # installing nodejs
   - name: installing nodejs package
     ansible.builtin.package: 
       name: nodejs
@@ -27,50 +24,42 @@
       shell: /sbin/nologin
       home: /app
 
-  # deleting the app directory
   - name: deleting the app directory
     ansible.builtin.file:
       path: /app
       state: absent
   
-  # creating the app directory
   - name: creating the app directory
     ansible.builtin.file:
       path: /app
       state: directory
   
-  # deleting user code file in tmp directory
   - name: deleting the user code file in tmp directory
     ansible.builtin.file:
       path: /tmp/user.zip
       state: absent
 
-  # downloading user application
   - name: downloading user application
     ansible.builtin.get_url:
       url: https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip
       dest: /tmp/user.zip
 
-  # unzipping the user file
-  - name: extracting the user file into app directory
+  - name: unzipping user application
     ansible.builtin.unarchive:
       src: /tmp/user.zip
       dest: /app
       remote_src: yes
 
-  # installing the dependencies
   - name: installing the dependencies
     community.general.npm: 
       path: /app
 
-  # copying user service file into /etc/systemd/system/user.service
   - name: copying user service file
     ansible.builtin.copy:
       src: ./user.service
       dest: /etc/systemd/system/user.service
 
-  # daemon reload, enabling service and startin it
-  - name: daemon reload enable and start
+  - name: daemon reload, enable and start
     ansible.builtin.systemd_service:
       name: user
       enabled: true

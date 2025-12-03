@@ -3,26 +3,22 @@
   become: yes
   tasks:
 
-  # copying mongo repo file to /etc/yum.repos.d
   - name: Copying mongodb repo file
     ansible.builtin.copy:
       src: ./mongo.repo
       dest: /etc/yum.repos.d/mongo.repo
 
-  # installing mongodb server
-  - name: Installing mongodb
+  - name: Installing mongodb package
     ansible.builtin.package:
       name: mongodb-org
       state: present
 
-  # allowing remote connection other than localhost
   - name: Allowing remote connections
     ansible.builtin.replace:
       path: /etc/mongod.conf
       regexp: '127.0.0.1'
       replace: '0.0.0.0'
 
-  # starting and enabling the mongodb server
   - name: Starting and enabling service
     ansible.builtin.service:
       name: mongod

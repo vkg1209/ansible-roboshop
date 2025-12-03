@@ -8,8 +8,7 @@
       - python3-devel
   tasks: 
 
-  # Installing all the python packages
-  - name: Installing python packages
+  - name: Installing all required python packages
     ansible.builtin.dnf:
       name: "{{item}}"
       state: present
@@ -25,53 +24,45 @@
       shell: /sbin/nologin
       home: /app
 
-  # deleting the app directory
   - name: deleting the app directory
     ansible.builtin.file:
       path: /app
       state: absent
   
-  # creating the app directory
   - name: creating the app directory
     ansible.builtin.file:
       path: /app
       state: directory
   
-  # deleting payment code file in tmp directory
   - name: deleting the payment code file in tmp directory
     ansible.builtin.file:
       path: /tmp/payment.zip
       state: absent
 
-  # downloading payment application
   - name: downloading payment application
     ansible.builtin.get_url:
       url: https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip
       dest: /tmp/payment.zip
 
-  # unzipping the payment file
-  - name: extracting the payment file into app directory
+  - name: unzipping the payment application
     ansible.builtin.unarchive:
       src: /tmp/payment.zip
       dest: /app
       remote_src: yes
 
-  # installing the dependencies
-  - name: install dependencies
+  - name: installing dependencies
     ansible.builtin.pip:
       requirements: requirements.txt
       executable: pip3.9
     args:
       chdir: /app
 
-  # copying payment service file into /etc/systemd/system/payment.service
   - name: copying payment service file
     ansible.builtin.copy:
       src: ./payment.service
       dest: /etc/systemd/system/payment.service
 
-  # daemon reload, enabling service and startin it
-  - name: daemon reload enable and start
+  - name: daemon reload, enable and start
     ansible.builtin.systemd_service:
       name: payment
       enabled: true

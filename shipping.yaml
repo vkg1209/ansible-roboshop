@@ -2,7 +2,7 @@
   hosts: shipping
   become: yes
   tasks:
-  - name: install mysql python libraries
+  - name: install all required python libraries
     ansible.builtin.pip:
       executable: pip3.9
       name: "{{ item }}"
@@ -10,7 +10,6 @@
       - cryptography
       - PyMySQL
 
-  # installing maven
   - name: installing maven package
     ansible.builtin.package: 
       name: maven
@@ -26,63 +25,53 @@
       shell: /sbin/nologin
       home: /app
 
-  # deleting the app directory
   - name: deleting the app directory
     ansible.builtin.file:
       path: /app
       state: absent
   
-  # creating the app directory
   - name: creating the app directory
     ansible.builtin.file:
       path: /app
       state: directory
   
-  # deleting shipping code file in tmp directory
   - name: deleting the shipping code file in tmp directory
     ansible.builtin.file:
       path: /tmp/shipping.zip
       state: absent
 
-  # downloading shipping application
   - name: downloading shipping application
     ansible.builtin.get_url:
       url: https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip
       dest: /tmp/shipping.zip
 
-  # unzipping the shipping file
-  - name: extracting the shipping file into app directory
+  - name: unzipping the shipping application
     ansible.builtin.unarchive:
       src: /tmp/shipping.zip
       dest: /app
       remote_src: yes
 
-  # installing the dependencies
   - name: installing the dependencies
     ansible.builtin.command: mvn clean package 
     args:
       chdir: /app
 
-  # moving the jar file
   - name: moving the jar file
     ansible.builtin.command: mv target/shipping-1.0.jar shipping.jar
     args:
       chdir: /app
 
-  # copying shipping service file into /etc/systemd/system/shipping.service
   - name: copying shipping service file
     ansible.builtin.copy:
       src: ./shipping.service
       dest: /etc/systemd/system/shipping.service
 
-  # installing mysql client
-  - name: Install MySQL client
+  - name: Installing MySQL client
     ansible.builtin.package:
       name: mysql
       state: present
 
-  # loading the shipping data into mysql server
-  - name: import shipping data into mysql
+  - name: loading the shipping data into mysql server
     community.mysql.mysql_db:
       state: import
       name: all
@@ -95,8 +84,7 @@
     - /app/db/app-user.sql 
     - /app/db/master-data.sql
 
-  # daemon reload, enabling service and startin it
-  - name: daemon reload enable and start
+  - name: daemon reload, enable and start
     ansible.builtin.systemd_service:
       name: shipping
       enabled: true

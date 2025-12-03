@@ -31,6 +31,7 @@
       wait: true
       overwrite: true
     loop: "{{output.results}}"
+    when: item.item != "frontend" 
 
 # task for creating or updating R53 Records with public-ip-address only for frontend
   - name: Creating or Updating R53 Records for Frontend
